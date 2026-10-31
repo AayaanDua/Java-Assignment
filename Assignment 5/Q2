@@ -1,0 +1,21 @@
+import java.util.Optional;
+
+public class Q2 {
+
+    public static void main(String[] args) {
+        Optional<String> email = Optional.of("rahul.sharma@college.edu");
+        Optional<String> noEmail = Optional.empty();
+
+        System.out.print("Email: ");
+        email.ifPresent(System.out::println);
+
+        System.out.println("With default: " + noEmail.orElse("not.provided@college.edu"));
+
+        try {
+            String value = noEmail.orElseThrow(() -> new IllegalStateException("Email address is missing"));
+            System.out.println(value);
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
