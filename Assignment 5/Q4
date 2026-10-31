@@ -1,0 +1,46 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+import java.util.Scanner;
+
+public class Q4 {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter event name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter event date (yyyy-MM-dd): ");
+        LocalDate date = LocalDate.parse(sc.nextLine().trim());
+
+        System.out.print("Enter start time (HH:mm): ");
+        LocalTime start = LocalTime.parse(sc.nextLine().trim());
+
+        System.out.print("Enter venue (press Enter to skip): ");
+        String venueInput = sc.nextLine().trim();
+        Optional<String> venue = venueInput.isEmpty() ? Optional.empty() : Optional.of(venueInput);
+
+        LocalDate today = LocalDate.now();
+        LocalTime end = start.plusHours(2);
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm a");
+
+        System.out.println("\n--- Event Details ---");
+        System.out.println("Event : " + name);
+        System.out.println("Date  : " + date);
+        System.out.println("Start : " + start.format(timeFormat));
+        System.out.println("End   : " + end.format(timeFormat));
+        System.out.println("Venue : " + venue.orElse("Venue not specified"));
+
+        if (date.isAfter(today)) {
+            long days = ChronoUnit.DAYS.between(today, date);
+            System.out.println("Status: The event is in the future (" + days + " days remaining)");
+        } else if (date.isEqual(today)) {
+            System.out.println("Status: The event is today");
+        } else {
+            System.out.println("Status: The event is in the past");
+        }
+    }
+}
