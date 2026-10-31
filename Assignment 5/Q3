@@ -1,0 +1,53 @@
+import java.util.Objects;
+import java.util.Optional;
+
+class Result<T extends Number> {
+    private final String name;
+    private final T marks;
+    private final T totalMarks;
+
+    Result(String name, T marks, T totalMarks) {
+        this.name = Objects.requireNonNull(name, "Student name is required");
+        this.totalMarks = Objects.requireNonNull(totalMarks, "Total marks are required");
+        this.marks = marks;
+    }
+
+    Optional<T> getMarks() {
+        return Optional.ofNullable(marks);
+    }
+
+    Optional<Double> getPercentage() {
+        return getMarks().map(m -> m.doubleValue() * 100 / totalMarks.doubleValue());
+    }
+
+    boolean hasPassed(double threshold) {
+        return getPercentage().map(p -> p >= threshold).orElse(false);
+    }
+
+    void display(double threshold) {
+        System.out.println("Student: " + name);
+        getMarks().ifPresentOrElse(
+            m -> System.out.println("Marks: " + m + "/" + totalMarks),
+            () -> System.out.println("Marks: not available"));
+        getPercentage().ifPresent(p -> System.out.printf("Percentage: %.2f%%%n", p));
+        System.out.println("Status: " + (hasPassed(threshold) ? "Pass" : "Fail / Not available"));
+        System.out.println();
+    }
+}
+
+public class Q3 {
+
+    public static void main(String[] args) {
+        double passPercentage = 40;
+
+        new Result<Integer>("Aman", 78, 100).display(passPercentage);
+        new Result<Double>("Simran", 32.5, 100.0).display(passPercentage);
+        new Result<Integer>("Karan", null, 100).display(passPercentage);
+
+        try {
+            new Result<Integer>(null, 50, 100);
+        } catch (NullPointerException e) {
+            System.out.println("Validation error: " + e.getMessage());
+        }
+    }
+}
