@@ -1,0 +1,45 @@
+import java.util.Objects;
+import java.util.Optional;
+
+class GenericUtils {
+
+    static <T> boolean isEqual(T a, T b) {
+        return Objects.equals(a, b);
+    }
+
+    static <T> T getDefault(Optional<T> value, T defaultValue) {
+        return value.orElse(defaultValue);
+    }
+
+    static <T extends Comparable<T>> T max(T a, T b) {
+        return a.compareTo(b) >= 0 ? a : b;
+    }
+
+    static boolean isNull(Object obj) {
+        return Objects.isNull(obj);
+    }
+}
+
+public class Q5 {
+
+    public static void main(String[] args) {
+        System.out.println("isEqual(\"java\", \"java\") : " + GenericUtils.isEqual("java", "java"));
+        System.out.println("isEqual(10, 20) : " + GenericUtils.isEqual(10, 20));
+        System.out.println("isEqual(2.5, 2.5) : " + GenericUtils.isEqual(2.5, 2.5));
+
+        Optional<String> city = Optional.of("Ludhiana");
+        Optional<String> noCity = Optional.empty();
+        System.out.println("getDefault(city, \"Unknown\") : " + GenericUtils.getDefault(city, "Unknown"));
+        System.out.println("getDefault(noCity, \"Unknown\") : " + GenericUtils.getDefault(noCity, "Unknown"));
+        System.out.println("getDefault(Optional.empty(), 0) : " + GenericUtils.getDefault(Optional.<Integer>empty(), 0));
+
+        System.out.println("max(45, 78) : " + GenericUtils.max(45, 78));
+        System.out.println("max(\"apple\", \"mango\") : " + GenericUtils.max("apple", "mango"));
+        System.out.println("max(3.14, 2.71) : " + GenericUtils.max(3.14, 2.71));
+        System.out.println("max('a', 'z') : " + GenericUtils.max('a', 'z'));
+
+        String text = null;
+        System.out.println("isNull(null) : " + GenericUtils.isNull(text));
+        System.out.println("isNull(\"hello\") : " + GenericUtils.isNull("hello"));
+    }
+}
